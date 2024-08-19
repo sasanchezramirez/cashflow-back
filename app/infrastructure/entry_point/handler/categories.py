@@ -61,3 +61,38 @@ async def new_category(
         logger.error(f"Unhandled exception: {e}")
         response_code = ApiResponse.create_response(ResponseCodeEnum.KOG01)
         return JSONResponse(status_code=500, content=response_code)
+    
+@router.post('/get_categories',  
+    response_model=ResponseDTO,
+    responses={
+        200: {"description": "Operation successful", "model": ResponseDTO},
+        400: {"description": "Validation Error", "model": ResponseDTO},
+        500: {"description": "Internal Server Error", "model": ResponseDTO},
+    }
+)
+@inject
+async def get_categories(
+    user_id: int,
+    category_usecase: CategoriesUseCase = Depends(Provide[Container.category_usecase]),
+    current_user: str = Depends(get_current_user)
+):
+    """
+    Gets all categories for a user.
+    
+    Args:
+        user_id (int): The user's id.
+        category_usecase (object): The Category UseCase.
+
+    Returns:
+        ResponseDTO: A response object containing the operation data.
+    """
+    logger.info("Init get_categories handler")
+    try:
+        categories = category_usecase.get_categories(user_id)
+        return ApiResponse.create_response(ResponseCodeEnum.KO000, categories)
+    except CustomException as e:
+        response_code = e.to_dict()
+        return JSONResponse(status_code=e.http_status, content=response_code)
+    except Exception as e:
+        logger.error(f"Unhandled exception: {e}")
+        response_code = ApiResponse.create_response(ResponseCodeEnum.KOG01)
