@@ -13,7 +13,7 @@ from app.domain.usecase.categories_usecase import CategoriesUseCase
 
 #Dtos
 from app.infrastructure.entry_point.dto.response_dto import ResponseDTO
-from app.infrastructure.entry_point.dto.categories_dto import NewCategoryInput
+from app.infrastructure.entry_point.dto.categories_dto import NewCategoryInput, UpdateCategoryInput
 
 #Mappers
 from app.infrastructure.entry_point.mapper.categories_mapper import CategoriesMapper
@@ -96,3 +96,41 @@ async def get_categories(
     except Exception as e:
         logger.error(f"Unhandled exception: {e}")
         response_code = ApiResponse.create_response(ResponseCodeEnum.KOG01)
+
+
+@router.post('/update-category', 
+    response_model=ResponseDTO,
+    responses={
+        200: {"description": "Operation successful", "model": ResponseDTO},
+        400: {"description": "Validation Error", "model": ResponseDTO},
+        500: {"description": "Internal Server Error", "model": ResponseDTO},
+    }
+)
+@inject
+async def update_category(
+    update_category_dto: UpdateCategoryInput,
+    category_usecase: CategoriesUseCase = Depends(Provide[Container.category_usecase]),
+    current_user: str = Depends(get_current_user)
+): 
+    """
+    Updates a category in the system.
+    
+    Args:
+        update_category_dto (dict): The data transfer object containing the category's details.
+        category_usecase (object): The Category UseCase.
+
+    Returns:
+        ResponseDTO: A response object containing the operation data.
+    """
+    logger.info("Init update-category handler")
+    try:
+        updated_category = CategoriesMapper.map_update_category_dto_to_category(update_category_dto)
+        updated_category = category_usecase.update_category(updated_category)
+        return ApiResponse.create_response(ResponseCodeEnum.KO000, updated_category)
+    except CustomException as e:
+        response_code = e.to_dict()
+        return JSONResponse(status_code=e.http_status, content=response_code)
+    except Exception as e:
+        logger.error(f"Unhandled exception: {e}")
+        response_code = ApiResponse.create_response(ResponseCodeEnum.KOG01)
+        return JSONResponse(status_code=500, content=response_code)

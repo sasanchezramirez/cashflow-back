@@ -12,5 +12,9 @@ class CategoryOutputDto(BaseModel):
     user_id: int
     budget_id: int
 
+class UpdateCategoryInput(BaseModel):
+    id: int
+    description: str
+
 class CategoryListOutputDto(BaseModel):
     categories = List[CategoryOutputDto]

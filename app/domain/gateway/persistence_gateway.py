@@ -27,3 +27,7 @@ class PersistenceGateway(ABC):
     @abstractmethod
     def get_categories_by_user_id(self, user_id: int):
        pass
+
+    @abstractmethod
+    def update_category(self, category: Category):
+        pass

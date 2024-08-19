@@ -34,4 +34,16 @@ class CategoriesUseCase:
             logger.error(f"Unhandled error: {e}")
             raise CustomException(ResponseCodeEnum.KOG01)
         
+    def update_category(self, category: Category):
+        logger.info("Init update category usecase")
+        try:
+            updated_category = self.persistence_gateway.update_category(category)
+            return updated_category
+        except CustomException as e:
+            logger.error(f"Custom exception: {e}")
+            raise e
+        except Exception as e:
+            logger.error(f"Unhandled error: {e}")
+            raise CustomException(ResponseCodeEnum.KOG01)
+        
         
