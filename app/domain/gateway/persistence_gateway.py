@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from app.domain.model.user import User
+from app.domain.model.category import Category
 
 class PersistenceGateway(ABC):
 
@@ -17,4 +18,8 @@ class PersistenceGateway(ABC):
 
     @abstractmethod
     def update_user(self, user: User):
+        pass
+
+    @abstractmethod
+    def create_category(self, category: Category):
         pass
