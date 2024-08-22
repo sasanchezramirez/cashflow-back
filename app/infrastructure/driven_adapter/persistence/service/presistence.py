@@ -6,15 +6,18 @@ from app.infrastructure.driven_adapter.persistence.entity.user_entity import Use
 from app.infrastructure.driven_adapter.persistence.repository.user_repository import UserRepository
 from app.infrastructure.driven_adapter.persistence.repository.categories_repository import CategoriesRepository
 from app.infrastructure.driven_adapter.persistence.repository.budgets_repository import BudgetsRepository
+from app.infrastructure.driven_adapter.persistence.repository.priorities_repository import PrioritiesRepository
 from app.domain.model.user import User
 from app.domain.gateway.persistence_gateway import PersistenceGateway
 from app.domain.model.util.custom_exceptions import CustomException
 from app.domain.model.util.response_codes import ResponseCodeEnum
 from app.domain.model.category import Category
 from app.domain.model.budget import Budget
+from app.domain.model.priority import Priority
 import app.infrastructure.driven_adapter.persistence.mapper.user_mapper as mapper
 from app.infrastructure.driven_adapter.persistence.mapper.categories_mapper import CategoriesMapper
 from app.infrastructure.driven_adapter.persistence.mapper.budgets_mapper import BudgetsMapper
+from app.infrastructure.driven_adapter.persistence.mapper.priorities_mapper import PrioritiesMapper
 logger = logging.getLogger("Persistence")
 
 class Persistence(PersistenceGateway):
@@ -24,6 +27,7 @@ class Persistence(PersistenceGateway):
         self.user_repository = UserRepository(session)
         self.category_repository = CategoriesRepository(session)
         self.budget_repository = BudgetsRepository(session)
+        self.priority_repository = PrioritiesRepository(session)
 
     def create_user(self, user: User):
         try:
@@ -173,5 +177,46 @@ class Persistence(PersistenceGateway):
             raise e
         except SQLAlchemyError as e:
             logger.error(f"Error updating budget: {e}")
+            self.session.rollback()
+            raise CustomException(ResponseCodeEnum.KOG02)
+        
+    def create_priority(self, priority: Priority):
+        try:
+            priority_entity = PrioritiesMapper.map_priority_to_priority_entity(priority)
+            created_priority_entity = self.priority_repository.create_priority(priority_entity)
+            return PrioritiesMapper.map_priority_entity_to_priority(created_priority_entity)
+        except CustomException as e:
+            self.session.rollback()
+            raise e
+        except SQLAlchemyError as e:
+            logger.error(f"Error creating priority: {e}")
+            self.session.rollback()
+            raise CustomException(ResponseCodeEnum.KOG02)
+
+    def get_priorities(self, user_id: int):
+        try:
+            priority_entities = self.priority_repository.get_priorities_by_user_id(user_id)
+            return [PrioritiesMapper.map_priority_entity_to_priority(priority) for priority in priority_entities]
+        except CustomException as e:
+            raise e
+        except SQLAlchemyError as e:
+            logger.error(f"Error getting priorities: {e}")
+            self.session.rollback()
+            raise CustomException(ResponseCodeEnum.KOG02)
+        
+    def update_priority(self, priority: Priority):
+        try:
+            existing_priority = self.priority_repository.get_priority_by_id(priority.id)
+            if not existing_priority:
+                raise CustomException(ResponseCodeEnum.KOU02)
+            updated_priority_entity = PrioritiesMapper.map_priority_update_to_priority_entity(priority, existing_priority)
+            updated_priority_entity = self.priority_repository.update_priority(updated_priority_entity)
+            self.session.commit()
+            return PrioritiesMapper.map_priority_entity_to_priority(updated_priority_entity)
+        except CustomException as e:
+            self.session.rollback()
+            raise e
+        except SQLAlchemyError as e:
+            logger.error(f"Error updating priority: {e}")
             self.session.rollback()
             raise CustomException(ResponseCodeEnum.KOG02)
