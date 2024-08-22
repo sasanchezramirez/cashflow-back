@@ -5,6 +5,7 @@ from app.domain.usecase.categories_usecase import CategoriesUseCase
 from app.domain.usecase.budgets_usecase import BudgetsUseCase
 from app.domain.usecase.priorities_usecase import PrioritiesUseCase
 from app.domain.usecase.recurrent_expenses_usecase import RecurrentExpensesUseCase
+from app.domain.usecase.expenses_usecase import ExpensesUseCase
 from app.infrastructure.driven_adapter.persistence.service.presistence import Persistence
 from app.infrastructure.driven_adapter.persistence.config.database import SessionLocal
 from dependency_injector import containers, providers
@@ -24,4 +25,5 @@ class Container(containers.DeclarativeContainer):
     budget_usecase = providers.Factory(BudgetsUseCase, persistence_gateway=persistence_gateway)
     priority_usecase = providers.Factory(PrioritiesUseCase, persistence_gateway=persistence_gateway)
     recurrent_expense_usecase = providers.Factory(RecurrentExpensesUseCase, persistence_gateway=persistence_gateway)
+    expense_usecase = providers.Factory(ExpensesUseCase, persistence_gateway=persistence_gateway)
 
