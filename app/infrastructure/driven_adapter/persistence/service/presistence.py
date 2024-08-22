@@ -7,6 +7,7 @@ from app.infrastructure.driven_adapter.persistence.repository.user_repository im
 from app.infrastructure.driven_adapter.persistence.repository.categories_repository import CategoriesRepository
 from app.infrastructure.driven_adapter.persistence.repository.budgets_repository import BudgetsRepository
 from app.infrastructure.driven_adapter.persistence.repository.priorities_repository import PrioritiesRepository
+from app.infrastructure.driven_adapter.persistence.repository.recurrent_expenses_repository import RecurrentExpensesRepository
 from app.domain.model.user import User
 from app.domain.gateway.persistence_gateway import PersistenceGateway
 from app.domain.model.util.custom_exceptions import CustomException
@@ -14,10 +15,12 @@ from app.domain.model.util.response_codes import ResponseCodeEnum
 from app.domain.model.category import Category
 from app.domain.model.budget import Budget
 from app.domain.model.priority import Priority
+from app.domain.model.recurrent_expense import RecurrentExpense
 import app.infrastructure.driven_adapter.persistence.mapper.user_mapper as mapper
 from app.infrastructure.driven_adapter.persistence.mapper.categories_mapper import CategoriesMapper
 from app.infrastructure.driven_adapter.persistence.mapper.budgets_mapper import BudgetsMapper
 from app.infrastructure.driven_adapter.persistence.mapper.priorities_mapper import PrioritiesMapper
+from app.infrastructure.driven_adapter.persistence.mapper.recurrent_expenses_mapper import RecurrentExpensesMapper
 logger = logging.getLogger("Persistence")
 
 class Persistence(PersistenceGateway):
@@ -28,6 +31,7 @@ class Persistence(PersistenceGateway):
         self.category_repository = CategoriesRepository(session)
         self.budget_repository = BudgetsRepository(session)
         self.priority_repository = PrioritiesRepository(session)
+        self.recurrent_expense_repository = RecurrentExpensesRepository(session)
 
     def create_user(self, user: User):
         try:
@@ -218,5 +222,45 @@ class Persistence(PersistenceGateway):
             raise e
         except SQLAlchemyError as e:
             logger.error(f"Error updating priority: {e}")
+            self.session.rollback()
+            raise CustomException(ResponseCodeEnum.KOG02)
+    def create_recurrent_expense(self, recurrent_expense: RecurrentExpense):
+        try:
+            recurrent_expense_entity = RecurrentExpensesMapper.map_recurrent_expense_to_recurrent_expense_entity(recurrent_expense)
+            created_recurrent_expense_entity = self.recurrent_expense_repository.create_recurrent_expense(recurrent_expense_entity)
+            return RecurrentExpensesMapper.map_recurrent_expense_entity_to_recurrent_expense(created_recurrent_expense_entity)
+        except CustomException as e:
+            self.session.rollback()
+            raise e
+        except SQLAlchemyError as e:
+            logger.error(f"Error creating recurrent expense: {e}")
+            self.session.rollback()
+            raise CustomException(ResponseCodeEnum.KOG02)
+
+    def get_recurrent_expenses(self, user_id: int):
+        try:
+            recurrent_expense_entities = self.recurrent_expense_repository.get_recurrent_expenses_by_user_id(user_id)
+            return [RecurrentExpensesMapper.map_recurrent_expense_entity_to_recurrent_expense(recurrent_expense) for recurrent_expense in recurrent_expense_entities]
+        except CustomException as e:
+            raise e
+        except SQLAlchemyError as e:
+            logger.error(f"Error getting recurrent expenses: {e}")
+            self.session.rollback()
+            raise CustomException(ResponseCodeEnum.KOG02)
+        
+    def update_recurrent_expense(self, recurrent_expense: RecurrentExpense):
+        try:
+            existing_recurrent_expense = self.recurrent_expense_repository.get_recurrent_expense_by_id(recurrent_expense.id)
+            if not existing_recurrent_expense:
+                raise CustomException(ResponseCodeEnum.KOU02)
+            updated_recurrent_expense_entity = RecurrentExpensesMapper.map_recurrent_expense_update_to_recurrent_expense_entity(recurrent_expense, existing_recurrent_expense)
+            updated_recurrent_expense_entity = self.recurrent_expense_repository.update_recurrent_expense(updated_recurrent_expense_entity)
+            self.session.commit()
+            return RecurrentExpensesMapper.map_recurrent_expense_entity_to_recurrent_expense(updated_recurrent_expense_entity)
+        except CustomException as e:
+            self.session.rollback()
+            raise e
+        except SQLAlchemyError as e:
+            logger.error(f"Error updating recurrent expense: {e}")
             self.session.rollback()
             raise CustomException(ResponseCodeEnum.KOG02)
