@@ -125,7 +125,7 @@ async def get_user(
     }
 )
 @inject
-async def login(
+def login(
     login_dto: LoginInput,
     auth_usecase: AuthUseCase = Depends(Provide[Container.auth_usecase])
 ):
@@ -149,7 +149,7 @@ async def login(
     user = user_mapper.map_login_dto_to_user(login_dto)
     
     try:
-        token = await auth_usecase.authenticate_user(user)
+        token = auth_usecase.authenticate_user(user)
         if token:
             token = Token(access_token=token, token_type="bearer")
             return ApiResponse.create_response(ResponseCodeEnum.KO000, token)

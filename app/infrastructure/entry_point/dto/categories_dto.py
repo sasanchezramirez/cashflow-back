@@ -17,4 +17,4 @@ class UpdateCategoryInput(BaseModel):
     description: str
 
 class CategoryListOutputDto(BaseModel):
-    categories = List[CategoryOutputDto]
+    categories: List[CategoryOutputDto]

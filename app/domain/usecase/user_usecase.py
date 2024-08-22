@@ -16,7 +16,7 @@ class UserUseCase:
         self.persistence_gateway = persistence_gateway
         
 
-    def create_user(self, user: User):
+    async def create_user(self, user: User):
         logger.info("Init create user usecase")
         user.creation_date = datetime.now().isoformat()
         user.password = hash_password(user.password)
@@ -31,7 +31,7 @@ class UserUseCase:
             raise CustomException(ResponseCodeEnum.KOG01)
 
         
-    def get_user(self, user_to_get: User):
+    async def get_user(self, user_to_get: User):
         logger.info("Init get user usecase")
         if user_to_get.id and user_to_get.id != 0:
             try:
@@ -54,7 +54,7 @@ class UserUseCase:
                 logger.error(f"Unhandled error: {e}")
                 raise CustomException(ResponseCodeEnum.KOG01)
             
-    def update_user(self, user: User):
+    async def update_user(self, user: User):
         logger.info("Init update user usecase")
         user.password = hash_password(user.password) if user.password else user.password
         try:

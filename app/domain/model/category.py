@@ -8,4 +8,4 @@ class Category(BaseModel):
     budget_id: Optional[int] = None
 
 class Categories(BaseModel):
-    categories = List[Category]
+    categories: List[Category]
