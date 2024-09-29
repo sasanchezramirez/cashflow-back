@@ -24,5 +24,4 @@ class ExpensesRepository:
     
     def update_expense(self, expense_entity: ExpensesEntity):
         self.session.commit()
-        self.session.refresh(expense_entity)
         return expense_entity

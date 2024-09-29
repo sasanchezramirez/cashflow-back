@@ -300,10 +300,13 @@ class Persistence(PersistenceGateway):
             existing_expense = self.expense_repository.get_expense_by_id(expense.id)
             if not existing_expense:
                 raise CustomException(ResponseCodeEnum.KOU02)
+            
+            # Mapear las actualizaciones directas en 'existing_expense'
             updated_expense_entity = ExpensesMapper.map_expense_update_to_expense_entity(expense, existing_expense)
-            updated_expense_entity = self.expense_repository.update_expense(updated_expense_entity)
+            
+            # No es necesario reasignar "updated_expense_entity" porque "existing_expense" será la misma entidad
             self.session.commit()
-            return ExpensesMapper.map_expense_entity_to_expense(updated_expense_entity)
+            return ExpensesMapper.map_expense_entity_to_expense(existing_expense)  # Mismas referencias
         except CustomException as e:
             self.session.rollback()
             raise e

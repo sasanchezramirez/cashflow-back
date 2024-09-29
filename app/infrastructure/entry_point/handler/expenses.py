@@ -41,7 +41,7 @@ async def new_expense(
 ):
     logger.info("Init new-expense handler")
     try:
-        new_expense = ExpensesMapper.map_new_expense_dto_to_expense(new_expense_dto)
+        new_expense = ExpensesMapper.map_new_expense_dto_to_expense(new_expense_dto)  # Mapeo de DTO a Entidad
         created_expense = expense_usecase.create_expense(new_expense)
         return ApiResponse.create_response(ResponseCodeEnum.KO000, created_expense)
     except CustomException as e:
@@ -51,6 +51,7 @@ async def new_expense(
         logger.error(f"Unhandled exception: {e}")
         response_code = ApiResponse.create_response(ResponseCodeEnum.KOG01)
         return JSONResponse(status_code=500, content=response_code)
+
 
 @router.post('/get-expenses',
     response_model=ResponseDTO,
