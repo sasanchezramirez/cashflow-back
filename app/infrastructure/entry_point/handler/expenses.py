@@ -52,7 +52,7 @@ async def new_expense(
         response_code = ApiResponse.create_response(ResponseCodeEnum.KOG01)
         return JSONResponse(status_code=500, content=response_code)
 
-@router.post('/get_expenses',
+@router.post('/get-expenses',
     response_model=ResponseDTO,
     responses={
         200: {"description": "Operation successful", "model": ResponseDTO},
@@ -66,7 +66,7 @@ async def get_expenses(
     expense_usecase: ExpensesUseCase = Depends(Provide[Container.expense_usecase]),
     current_user: str = Depends(get_current_user)
 ):
-    logger.info("Init get_expenses handler")
+    logger.info("Init get-expenses handler")
     try:
         expenses = expense_usecase.get_expenses(user_id)
         return ApiResponse.create_response(ResponseCodeEnum.KO000, expenses)
