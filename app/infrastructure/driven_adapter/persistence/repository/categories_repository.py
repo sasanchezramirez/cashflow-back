@@ -19,7 +19,6 @@ class CategoriesRepository:
     
     def get_categories_by_user_id(self, user_id):
         category_entities = self.session.query(CategoryEntity).filter_by(user_id=user_id).all()
-        self.session.refresh(category_entities)
         return category_entities
         
     
