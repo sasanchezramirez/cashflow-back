@@ -17,7 +17,6 @@ class CategoriesMapper:
         category = Category(
             id=update_category_dto.id,
             description=update_category_dto.description,
-            user_id=update_category_dto.user_id,
             budget_id=update_category_dto.budget_id
         )
         return category

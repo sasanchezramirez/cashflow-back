@@ -135,10 +135,13 @@ class Persistence(PersistenceGateway):
             existing_category = self.category_repository.get_category_by_id(category.id)
             if not existing_category:
                 raise CustomException(ResponseCodeEnum.KOU02)
-            category_entity = CategoriesMapper.map_category_update_to_category_entity(category, existing_category)
-            updated_category_entity = self.category_repository.update_category(category_entity)
+            
+            # Mapear las actualizaciones directas a 'existing_category'
+            CategoriesMapper.map_category_update_to_category_entity(category, existing_category)
+            
+            # Realizar el commit de la sesión para persistir los cambios en la DB
             self.session.commit()
-            return CategoriesMapper.map_category_entity_to_category(updated_category_entity)
+            return CategoriesMapper.map_category_entity_to_category(existing_category)
         except CustomException as e:
             self.session.rollback()
             raise e

@@ -23,6 +23,4 @@ class CategoriesRepository:
         
     
     def update_category(self, category):
-        self.session.commit()
-        self.session.refresh(category)
         return category

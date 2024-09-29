@@ -23,10 +23,6 @@ class CategoriesMapper:
     
     @staticmethod
     def map_category_update_to_category_entity(category: Category, existing_category: CategoryEntity):
-        category_entity = CategoryEntity(
-            id=existing_category.id,
-            description=category.description,
-            budget_id=category.budget_id,
-            user_id=category.user_id
-        )
-        return category_entity
+        existing_category.description = category.description
+        existing_category.budget_id = category.budget_id
+        return existing_category
