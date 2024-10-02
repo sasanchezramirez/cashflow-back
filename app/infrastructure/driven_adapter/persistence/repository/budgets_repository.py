@@ -8,7 +8,6 @@ class BudgetsRepository:
     def create_budget(self, budget_entity: BudgetsEntity):
         self.session.add(budget_entity)
         self.session.commit()
-        self.session.refresh(budget_entity)
         return budget_entity
 
     def get_budget_by_id(self, id: int):
