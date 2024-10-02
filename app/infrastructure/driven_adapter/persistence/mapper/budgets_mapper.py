@@ -23,7 +23,7 @@ class BudgetsMapper:
     
     @staticmethod
     def map_budget_update_to_budget_entity(budget: Budget, existing_budget: BudgetsEntity) -> BudgetsEntity:
-        existing_budget.weekly_amount = budget.weekly_amount
-        existing_budget.monthly_amount = budget.monthly_amount
+        existing_budget.weekly_amount = budget.weekly_budget
+        existing_budget.monthly_amount = budget.monthly_budget
         existing_budget.user_id = budget.user_id
         return existing_budget

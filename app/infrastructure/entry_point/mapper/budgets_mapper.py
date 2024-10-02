@@ -10,3 +10,12 @@ class BudgetsMapper:
             monthly_budget=new_budget_dto.monthly_amount,
             user_id=new_budget_dto.user_id
         )
+    
+    @staticmethod
+    def map_update_budget_dto_to_budget(update_budget_dto: UpdateBudgetInput) -> Budget:
+        return Budget(
+            id=update_budget_dto.id,
+            weekly_budget=update_budget_dto.weekly_amount,
+            monthly_budget=update_budget_dto.monthly_amount,
+            user_id=update_budget_dto.user_id
+        )
