@@ -5,3 +5,4 @@ class Budget(BaseModel):
     id: Optional[int] = None
     weekly_budget: Optional[float] = None
     monthly_budget: Optional[float] = None
+    user_id: Optional[int] = None

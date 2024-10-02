@@ -7,5 +7,6 @@ class BudgetsMapper:
     def map_new_budget_dto_to_budget(new_budget_dto: NewBudgetInput) -> Budget:
         return Budget(
             weekly_budget=new_budget_dto.weekly_amount,
-            monthly_budget=new_budget_dto.monthly_amount
+            monthly_budget=new_budget_dto.monthly_amount,
+            user_id=new_budget_dto.user_id
         )

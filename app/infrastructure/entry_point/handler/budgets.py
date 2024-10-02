@@ -52,7 +52,7 @@ async def new_budget(
         response_code = ApiResponse.create_response(ResponseCodeEnum.KOG01)
         return JSONResponse(status_code=500, content=response_code)
 
-@router.post('/get_budgets',
+@router.post('/get-budgets',
     response_model=ResponseDTO,
     responses={
         200: {"description": "Operation successful", "model": ResponseDTO},
