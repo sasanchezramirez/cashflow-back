@@ -3,18 +3,14 @@ from app.domain.model.recurrent_expense import RecurrentExpense
 from app.infrastructure.driven_adapter.persistence.entity.recurrent_expenses_entity import RecurrentExpensesEntity
 
 class RecurrentExpensesMapper:
-    @staticmethod
-    def map_new_recurrent_expense_dto_to_recurrent_expense(new_recurrent_expense_dto: NewRecurrentExpenseInput) -> RecurrentExpense:
-        return RecurrentExpense(
-            description=new_recurrent_expense_dto.description,
-            amount=new_recurrent_expense_dto.amount
-        )
 
     @staticmethod
     def map_recurrent_expense_to_recurrent_expense_entity(recurrent_expense: RecurrentExpense) -> RecurrentExpensesEntity:
         return RecurrentExpensesEntity(
             description=recurrent_expense.description,
-            amount=recurrent_expense.amount
+            category_id=recurrent_expense.category_id,
+            priority_id=recurrent_expense.priority_id,
+            user_id=recurrent_expense.user_id
         )
     
     @staticmethod
@@ -22,7 +18,9 @@ class RecurrentExpensesMapper:
         return RecurrentExpense(
             id=recurrent_expense_entity.id,
             description=recurrent_expense_entity.description,
-            amount=recurrent_expense_entity.amount
+            category_id=recurrent_expense_entity.category_id,
+            priority_id=recurrent_expense_entity.priority_id,
+            user_id=recurrent_expense_entity.user_id
         )
     
     @staticmethod

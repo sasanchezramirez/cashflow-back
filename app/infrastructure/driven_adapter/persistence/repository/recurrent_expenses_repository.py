@@ -8,7 +8,6 @@ class RecurrentExpensesRepository:
     def create_recurrent_expense(self, recurrent_expense_entity: RecurrentExpensesEntity):
         self.session.add(recurrent_expense_entity)
         self.session.commit()
-        self.session.refresh(recurrent_expense_entity)
         return recurrent_expense_entity
 
     def get_recurrent_expense_by_id(self, id: int):
