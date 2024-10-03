@@ -9,4 +9,5 @@ class NewRecurrentExpenseInput(BaseModel):
 class UpdateRecurrentExpenseInput(BaseModel):
     id: int
     description: str
-    amount: int
+    category_id: int
+    priority_id: int

@@ -11,3 +11,12 @@ class RecurrentExpensesMapper:
             priority_id=new_recurrent_expense_dto.priority_id,
             user_id=new_recurrent_expense_dto.user_id
         )
+    
+    @staticmethod
+    def map_update_recurrent_expense_dto_to_recurrent_expense(update_recurrent_expense_dto: UpdateRecurrentExpenseInput) -> RecurrentExpense:
+        return RecurrentExpense(
+            id=update_recurrent_expense_dto.id,
+            description=update_recurrent_expense_dto.description,
+            category_id=update_recurrent_expense_dto.category_id,
+            priority_id=update_recurrent_expense_dto.priority_id,
+        )

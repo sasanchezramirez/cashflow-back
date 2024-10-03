@@ -26,5 +26,7 @@ class RecurrentExpensesMapper:
     @staticmethod
     def map_recurrent_expense_update_to_recurrent_expense_entity(recurrent_expense: RecurrentExpense, existing_recurrent_expense: RecurrentExpensesEntity) -> RecurrentExpensesEntity:
         existing_recurrent_expense.description = recurrent_expense.description
-        existing_recurrent_expense.amount = recurrent_expense.amount
+        existing_recurrent_expense.category_id = recurrent_expense.category_id
+        existing_recurrent_expense.priority_id = recurrent_expense.priority_id
+        existing_recurrent_expense.id = recurrent_expense.id
         return existing_recurrent_expense
