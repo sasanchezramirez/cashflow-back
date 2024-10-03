@@ -52,7 +52,7 @@ async def new_recurrent_expense(
         response_code = ApiResponse.create_response(ResponseCodeEnum.KOG01)
         return JSONResponse(status_code=500, content=response_code)
 
-@router.post('/get_recurrent_expenses',
+@router.post('/get-recurrent-expenses',
     response_model=ResponseDTO,
     responses={
         200: {"description": "Operation successful", "model": ResponseDTO},
