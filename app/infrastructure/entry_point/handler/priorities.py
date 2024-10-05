@@ -52,7 +52,7 @@ async def new_priority(
         response_code = ApiResponse.create_response(ResponseCodeEnum.KOG01)
         return JSONResponse(status_code=500, content=response_code)
 
-@router.post('/get_priorities',
+@router.post('/get-priorities',
     response_model=ResponseDTO,
     responses={
         200: {"description": "Operation successful", "model": ResponseDTO},
