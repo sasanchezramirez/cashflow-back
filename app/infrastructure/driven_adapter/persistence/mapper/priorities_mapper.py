@@ -22,4 +22,5 @@ class PrioritiesMapper:
     @staticmethod
     def map_priority_update_to_priority_entity(priority: Priority, existing_priority: PrioritiesEntity) -> PrioritiesEntity:
         existing_priority.description = priority.description
+        existing_priority.user_id = priority.user_id
         return existing_priority

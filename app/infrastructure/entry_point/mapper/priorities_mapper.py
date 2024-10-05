@@ -9,21 +9,11 @@ class PrioritiesMapper:
             description=new_priority_dto.description,
             user_id=new_priority_dto.user_id
         )
-
-    @staticmethod
-    def map_priority_to_priority_entity(priority: Priority) -> PrioritiesEntity:
-        return PrioritiesEntity(
-            description=priority.description
-        )
     
     @staticmethod
-    def map_priority_entity_to_priority(priority_entity: PrioritiesEntity) -> Priority:
+    def map_update_priority_dto_to_priority(update_priority_dto: UpdatePriorityInput) -> Priority:
         return Priority(
-            id=priority_entity.id,
-            description=priority_entity.description
+            id=update_priority_dto.id,
+            description=update_priority_dto.description,
+            user_id=update_priority_dto.user_id
         )
-    
-    @staticmethod
-    def map_priority_update_to_priority_entity(priority: Priority, existing_priority: PrioritiesEntity) -> PrioritiesEntity:
-        existing_priority.description = priority.description
-        return existing_priority
