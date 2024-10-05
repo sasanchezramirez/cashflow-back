@@ -9,7 +9,8 @@ class BudgetsMapper:
         return BudgetsEntity(
             weekly_amount=budget.weekly_budget,
             monthly_amount=budget.monthly_budget,
-            user_id=budget.user_id
+            user_id=budget.user_id,
+            category_id=budget.category_id
         )
     
     @staticmethod
@@ -18,7 +19,8 @@ class BudgetsMapper:
             id=budget_entity.id,
             weekly_budget=budget_entity.weekly_amount,
             monthly_budget=budget_entity.monthly_amount,
-            user_id=budget_entity.user_id
+            user_id=budget_entity.user_id,
+            category_id=budget_entity.category_id
         )
     
     @staticmethod
@@ -26,4 +28,5 @@ class BudgetsMapper:
         existing_budget.weekly_amount = budget.weekly_budget
         existing_budget.monthly_amount = budget.monthly_budget
         existing_budget.user_id = budget.user_id
+        existing_budget.category_id = budget.category_id
         return existing_budget

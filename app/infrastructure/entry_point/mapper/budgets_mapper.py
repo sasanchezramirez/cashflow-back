@@ -8,7 +8,8 @@ class BudgetsMapper:
         return Budget(
             weekly_budget=new_budget_dto.weekly_amount,
             monthly_budget=new_budget_dto.monthly_amount,
-            user_id=new_budget_dto.user_id
+            user_id=new_budget_dto.user_id,
+            category_id=new_budget_dto.category_id
         )
     
     @staticmethod
@@ -17,5 +18,6 @@ class BudgetsMapper:
             id=update_budget_dto.id,
             weekly_budget=update_budget_dto.weekly_amount,
             monthly_budget=update_budget_dto.monthly_amount,
-            user_id=update_budget_dto.user_id
+            user_id=update_budget_dto.user_id,
+            category_id=update_budget_dto.category_id
         )
