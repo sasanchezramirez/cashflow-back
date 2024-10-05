@@ -6,7 +6,8 @@ class PrioritiesMapper:
     @staticmethod
     def map_new_priority_dto_to_priority(new_priority_dto: NewPriorityInput) -> Priority:
         return Priority(
-            description=new_priority_dto.description
+            description=new_priority_dto.description,
+            user_id=new_priority_dto.user_id
         )
 
     @staticmethod

@@ -3,23 +3,20 @@ from app.domain.model.priority import Priority
 from app.infrastructure.driven_adapter.persistence.entity.priorities_entity import PrioritiesEntity
 
 class PrioritiesMapper:
-    @staticmethod
-    def map_new_priority_dto_to_priority(new_priority_dto: NewPriorityInput) -> Priority:
-        return Priority(
-            description=new_priority_dto.description
-        )
 
     @staticmethod
     def map_priority_to_priority_entity(priority: Priority) -> PrioritiesEntity:
         return PrioritiesEntity(
-            description=priority.description
+            description=priority.description,
+            user_id=priority.user_id
         )
     
     @staticmethod
     def map_priority_entity_to_priority(priority_entity: PrioritiesEntity) -> Priority:
         return Priority(
             id=priority_entity.id,
-            description=priority_entity.description
+            description=priority_entity.description,
+            user_id=priority_entity.user_id
         )
     
     @staticmethod

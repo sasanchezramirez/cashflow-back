@@ -5,3 +5,4 @@ class PrioritiesEntity(Base):
     __tablename__ = "priorities"
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     description = Column(String, index=True)
+    user_id = Column(Integer, index=True)
