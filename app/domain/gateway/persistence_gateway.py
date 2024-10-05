@@ -8,6 +8,8 @@ from app.domain.model.recurrent_expense import RecurrentExpense
 
 class PersistenceGateway(ABC):
 
+    #Users
+
     @abstractmethod
     def create_user(self, user: User):
         pass
@@ -24,6 +26,8 @@ class PersistenceGateway(ABC):
     def update_user(self, user: User):
         pass
 
+    #Categories
+
     @abstractmethod
     def create_category(self, category: Category):
         pass
@@ -35,6 +39,8 @@ class PersistenceGateway(ABC):
     @abstractmethod
     def update_category(self, category: Category):
         pass
+    
+     # Budgets
 
     @abstractmethod
     def create_budget(self, budget: Budget):
@@ -49,6 +55,12 @@ class PersistenceGateway(ABC):
         pass
 
     @abstractmethod
+    def get_budget_by_category(self, category_id: int):
+        pass
+
+    # Priorities
+
+    @abstractmethod
     def create_priority(self, priority: Priority):
         pass
 
@@ -59,6 +71,8 @@ class PersistenceGateway(ABC):
     @abstractmethod
     def update_priority(self, priority: Priority):
         pass
+
+    # Recurrent Expenses
 
     @abstractmethod
     def create_recurrent_expense(self, recurrent_expense: RecurrentExpense):
@@ -72,6 +86,8 @@ class PersistenceGateway(ABC):
     def update_recurrent_expense(self, recurrent_expense: RecurrentExpense):
         pass
 
+    # Expenses
+
     @abstractmethod
     def create_expense(self, expense: Expense):
         pass
@@ -83,3 +99,4 @@ class PersistenceGateway(ABC):
     @abstractmethod
     def update_expense(self, expense: Expense):
         pass
+    

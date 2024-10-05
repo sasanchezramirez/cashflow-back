@@ -25,5 +25,5 @@ class Container(containers.DeclarativeContainer):
     budget_usecase = providers.Factory(BudgetsUseCase, persistence_gateway=persistence_gateway)
     priority_usecase = providers.Factory(PrioritiesUseCase, persistence_gateway=persistence_gateway)
     recurrent_expense_usecase = providers.Factory(RecurrentExpensesUseCase, persistence_gateway=persistence_gateway)
-    expense_usecase = providers.Factory(ExpensesUseCase, persistence_gateway=persistence_gateway)
+    expense_usecase = providers.Factory(ExpensesUseCase, persistence_gateway=persistence_gateway, budget_usecase=budget_usecase)
 

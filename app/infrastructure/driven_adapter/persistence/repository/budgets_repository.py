@@ -25,3 +25,8 @@ class BudgetsRepository:
         self.session.commit()
         self.session.refresh(budget_entity)
         return budget_entity
+    
+    def get_budget_by_category(self, category_id: int):
+        budget_entity = self.session.query(BudgetsEntity).filter_by(category_id=category_id).first()
+        self.session.refresh(budget_entity)
+        return budget_entity

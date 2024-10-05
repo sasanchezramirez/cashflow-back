@@ -37,6 +37,7 @@ class Persistence(PersistenceGateway):
         self.recurrent_expense_repository = RecurrentExpensesRepository(session)
         self.expense_repository = ExpensesRepository(session)
 
+# Users
     def create_user(self, user: User):
         try:
             user_entity = User_entity(user)
@@ -89,7 +90,9 @@ class Persistence(PersistenceGateway):
             logger.error(f"Error updating user: {e}")
             self.session.rollback()
             raise CustomException(ResponseCodeEnum.KOG02)
-        
+
+# Categories
+
     def create_category(self, category: Category):
         try:
             category_entity = CategoriesMapper.map_category_to_category_entity(category)
@@ -136,10 +139,8 @@ class Persistence(PersistenceGateway):
             if not existing_category:
                 raise CustomException(ResponseCodeEnum.KOU02)
             
-            # Mapear las actualizaciones directas a 'existing_category'
             CategoriesMapper.map_category_update_to_category_entity(category, existing_category)
-            
-            # Realizar el commit de la sesión para persistir los cambios en la DB
+          
             self.session.commit()
             return CategoriesMapper.map_category_entity_to_category(existing_category)
         except CustomException as e:
@@ -149,7 +150,9 @@ class Persistence(PersistenceGateway):
             logger.error(f"Error updating category: {e}")
             self.session.rollback()
             raise CustomException(ResponseCodeEnum.KOG02)
-        
+
+# Budgets
+
     def create_budget(self, budget: Budget):
         try:
             budget_entity = BudgetsMapper.map_budget_to_budget_entity(budget)
@@ -191,6 +194,19 @@ class Persistence(PersistenceGateway):
             self.session.rollback()
             raise CustomException(ResponseCodeEnum.KOG02)
         
+    def get_budget_by_category(self, category_id: int):
+        try:
+            budget_entity = self.budget_repository.get_budget_by_category(category_id)
+            return BudgetsMapper.map_budget_entity_to_budget(budget_entity)
+        except CustomException as e:
+            raise e
+        except SQLAlchemyError as e:
+            logger.error(f"Error getting budget by category: {e}")
+            self.session.rollback()
+            raise CustomException(ResponseCodeEnum.KOG02)
+
+# Priorities
+
     def create_priority(self, priority: Priority):
         try:
             priority_entity = PrioritiesMapper.map_priority_to_priority_entity(priority)
@@ -231,6 +247,9 @@ class Persistence(PersistenceGateway):
             logger.error(f"Error updating priority: {e}")
             self.session.rollback()
             raise CustomException(ResponseCodeEnum.KOG02)
+        
+# Recurrent Expenses
+
     def create_recurrent_expense(self, recurrent_expense: RecurrentExpense):
         try:
             recurrent_expense_entity = RecurrentExpensesMapper.map_recurrent_expense_to_recurrent_expense_entity(recurrent_expense)
@@ -271,6 +290,9 @@ class Persistence(PersistenceGateway):
             logger.error(f"Error updating recurrent expense: {e}")
             self.session.rollback()
             raise CustomException(ResponseCodeEnum.KOG02)
+        
+# Expenses
+
     def create_expense(self, expense: Expense):
         try:
             expense_entity = ExpensesMapper.map_expense_to_expense_entity(expense)
@@ -301,10 +323,8 @@ class Persistence(PersistenceGateway):
             if not existing_expense:
                 raise CustomException(ResponseCodeEnum.KOU02)
             
-            # Mapear las actualizaciones directas en 'existing_expense'
             updated_expense_entity = ExpensesMapper.map_expense_update_to_expense_entity(expense, existing_expense)
             
-            # No es necesario reasignar "updated_expense_entity" porque "existing_expense" será la misma entidad
             self.session.commit()
             return ExpensesMapper.map_expense_entity_to_expense(existing_expense)  # Mismas referencias
         except CustomException as e:
