@@ -7,3 +7,5 @@ class Budget(BaseModel):
     monthly_budget: Optional[float] = None
     user_id: Optional[int] = None
     category_id: Optional[int] = None
+    weekly_balance: Optional[float] = None
+    monthly_balance: Optional[float] = None

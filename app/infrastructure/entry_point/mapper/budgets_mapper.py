@@ -9,7 +9,9 @@ class BudgetsMapper:
             weekly_budget=new_budget_dto.weekly_amount,
             monthly_budget=new_budget_dto.monthly_amount,
             user_id=new_budget_dto.user_id,
-            category_id=new_budget_dto.category_id
+            category_id=new_budget_dto.category_id,
+            weekly_balance=new_budget_dto.weekly_amount,
+            monthly_balance=new_budget_dto.monthly_amount
         )
     
     @staticmethod

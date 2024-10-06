@@ -8,3 +8,5 @@ class BudgetsEntity(Base):
     monthly_amount = Column(Integer, index=True)
     user_id = Column(Integer, index=True)
     category_id = Column(Integer, index=True)
+    weekly_balance = Column(Integer, index=True)
+    monthly_balance = Column(Integer, index=True)

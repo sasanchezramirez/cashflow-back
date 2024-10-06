@@ -10,7 +10,9 @@ class BudgetsMapper:
             weekly_amount=budget.weekly_budget,
             monthly_amount=budget.monthly_budget,
             user_id=budget.user_id,
-            category_id=budget.category_id
+            category_id=budget.category_id,
+            weekly_balance=budget.weekly_balance,
+            monthly_balance=budget.monthly_balance
         )
     
     @staticmethod
@@ -20,7 +22,9 @@ class BudgetsMapper:
             weekly_budget=budget_entity.weekly_amount,
             monthly_budget=budget_entity.monthly_amount,
             user_id=budget_entity.user_id,
-            category_id=budget_entity.category_id
+            category_id=budget_entity.category_id,
+            weekly_balance=budget_entity.weekly_balance,
+            monthly_balance=budget_entity.monthly_balance
         )
     
     @staticmethod
