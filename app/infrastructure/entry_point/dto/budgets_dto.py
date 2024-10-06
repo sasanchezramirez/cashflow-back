@@ -12,3 +12,5 @@ class UpdateBudgetInput(BaseModel):
     monthly_amount: int
     user_id : int
     category_id : int
+    weekly_balance : float
+    monthly_balance : float

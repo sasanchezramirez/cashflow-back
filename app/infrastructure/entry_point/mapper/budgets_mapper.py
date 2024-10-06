@@ -21,5 +21,7 @@ class BudgetsMapper:
             weekly_budget=update_budget_dto.weekly_amount,
             monthly_budget=update_budget_dto.monthly_amount,
             user_id=update_budget_dto.user_id,
-            category_id=update_budget_dto.category_id
+            category_id=update_budget_dto.category_id,
+            weekly_balance=update_budget_dto.weekly_balance,
+            monthly_balance=update_budget_dto.monthly_balance
         )
