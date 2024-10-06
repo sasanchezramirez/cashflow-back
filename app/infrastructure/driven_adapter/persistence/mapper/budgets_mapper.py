@@ -33,4 +33,6 @@ class BudgetsMapper:
         existing_budget.monthly_amount = budget.monthly_budget
         existing_budget.user_id = budget.user_id
         existing_budget.category_id = budget.category_id
+        existing_budget.weekly_balance = budget.weekly_balance
+        existing_budget.monthly_balance = budget.monthly_balance
         return existing_budget

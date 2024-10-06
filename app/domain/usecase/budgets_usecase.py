@@ -51,12 +51,12 @@ class BudgetsUseCase:
         logger.info("Init update budget amount usecase")
         try:
             budget: Budget = self.persistence_gateway.get_budget_by_category(category_id)
-            old_monthly_amount = budget.monthly_budget
-            new_monthly_amount = old_monthly_amount + amount
-            old_weekly_amount = budget.weekly_budget
+            old_monthly_amount = budget.monthly_balance
+            new_monthly_amount = old_monthly_amount - amount
+            old_weekly_amount = budget.weekly_balance
             new_weekly_amount = old_weekly_amount - amount
-            budget.monthly_budget = new_monthly_amount
-            budget.weekly_budget = new_weekly_amount
+            budget.monthly_balance = new_monthly_amount
+            budget.weekly_balance = new_weekly_amount
             updated_budget = self.persistence_gateway.update_budget(budget)
             return updated_budget
         except CustomException as e:
