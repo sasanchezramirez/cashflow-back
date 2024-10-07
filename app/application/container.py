@@ -8,6 +8,7 @@ from app.domain.usecase.recurrent_expenses_usecase import RecurrentExpensesUseCa
 from app.domain.usecase.expenses_usecase import ExpensesUseCase
 from app.infrastructure.driven_adapter.persistence.service.presistence import Persistence
 from app.infrastructure.driven_adapter.persistence.config.database import SessionLocal
+from app.domain.usecase.util.scheduler import SchedulerService
 from dependency_injector import containers, providers
 
 
@@ -26,4 +27,4 @@ class Container(containers.DeclarativeContainer):
     priority_usecase = providers.Factory(PrioritiesUseCase, persistence_gateway=persistence_gateway)
     recurrent_expense_usecase = providers.Factory(RecurrentExpensesUseCase, persistence_gateway=persistence_gateway)
     expense_usecase = providers.Factory(ExpensesUseCase, persistence_gateway=persistence_gateway, budget_usecase=budget_usecase)
-
+    scheduler_service = providers.Factory(SchedulerService)
