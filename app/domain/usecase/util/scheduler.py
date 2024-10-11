@@ -12,7 +12,7 @@ class SchedulerService:
         logger.info("Scheduler started.")
 
     def schedule_monthly_task(self, func):
-        trigger = CronTrigger(day=7, hour=23, minute=37)
+        trigger = CronTrigger(day=11, hour=1, minute=38)
         self.scheduler.add_job(func, trigger)
         logger.info("Monthly task scheduled.")
 

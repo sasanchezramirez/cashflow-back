@@ -1,13 +1,14 @@
 import logging
 
-from dependency_injector.wiring import inject, Provide
-from app.application.container import Container
+
+
+from app.domain.gateway.persistence_gateway import PersistenceGateway
 
 logger = logging.getLogger(__name__)
 
-@inject
-def monthly_task(
-    recurrent_expense_usecase = Provide[Container.recurrent_expense_usecase],
-    budget_usecase = Provide[Container.budget_usecase],
-):
-    logger.info("Monthly tasks executed.")
+class BudgetBalanceUseCase:
+    def __init__(self, persistence_gateway: PersistenceGateway):
+        self.persistence_gateway = persistence_gateway
+
+    def monthly_task():
+        logger.info("Monthly tasks executed.")
