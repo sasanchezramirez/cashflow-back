@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 from typing import Optional
 
-class saves(BaseModel):
+class Saves(BaseModel):
     id: Optional[int] = None
     month: Optional[str] = None
     saves: Optional[int] = None

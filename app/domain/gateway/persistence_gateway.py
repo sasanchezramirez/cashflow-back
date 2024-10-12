@@ -5,6 +5,8 @@ from app.domain.model.budget import Budget
 from app.domain.model.priority import Priority
 from app.domain.model.expense import Expense
 from app.domain.model.recurrent_expense import RecurrentExpense
+from app.domain.model.saves import Saves
+from typing import List
 
 class PersistenceGateway(ABC):
 
@@ -58,6 +60,9 @@ class PersistenceGateway(ABC):
     def get_budget_by_category(self, category_id: int):
         pass
 
+    @abstractmethod
+    def get_budgets_by_user_id(self, user_id: int) -> List[Budget]:
+        pass
     # Priorities
 
     @abstractmethod
@@ -98,5 +103,11 @@ class PersistenceGateway(ABC):
 
     @abstractmethod
     def update_expense(self, expense: Expense):
+        pass
+
+    # Saves
+
+    @abstractmethod
+    def insert_new_save(self, saves: Saves):
         pass
     
