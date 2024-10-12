@@ -1,5 +1,6 @@
 import logging
 
+from typing import List
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
 from app.infrastructure.driven_adapter.persistence.entity.user_entity import User_entity
@@ -9,6 +10,7 @@ from app.infrastructure.driven_adapter.persistence.repository.budgets_repository
 from app.infrastructure.driven_adapter.persistence.repository.priorities_repository import PrioritiesRepository
 from app.infrastructure.driven_adapter.persistence.repository.recurrent_expenses_repository import RecurrentExpensesRepository
 from app.infrastructure.driven_adapter.persistence.repository.expenses_repository import ExpensesRepository
+from app.infrastructure.driven_adapter.persistence.repository.saves_repository import SavesRepository
 from app.domain.model.user import User
 from app.domain.gateway.persistence_gateway import PersistenceGateway
 from app.domain.model.util.custom_exceptions import CustomException
@@ -18,12 +20,14 @@ from app.domain.model.budget import Budget
 from app.domain.model.priority import Priority
 from app.domain.model.expense import Expense
 from app.domain.model.recurrent_expense import RecurrentExpense
+from app.domain.model.saves import Saves
 import app.infrastructure.driven_adapter.persistence.mapper.user_mapper as mapper
 from app.infrastructure.driven_adapter.persistence.mapper.categories_mapper import CategoriesMapper
 from app.infrastructure.driven_adapter.persistence.mapper.budgets_mapper import BudgetsMapper
 from app.infrastructure.driven_adapter.persistence.mapper.priorities_mapper import PrioritiesMapper
 from app.infrastructure.driven_adapter.persistence.mapper.recurrent_expenses_mapper import RecurrentExpensesMapper
 from app.infrastructure.driven_adapter.persistence.mapper.expenses_mapper import ExpensesMapper
+from app.infrastructure.driven_adapter.persistence.mapper.saves_mapper import SavesMapper
 logger = logging.getLogger("Persistence")
 
 class Persistence(PersistenceGateway):
@@ -36,6 +40,7 @@ class Persistence(PersistenceGateway):
         self.priority_repository = PrioritiesRepository(session)
         self.recurrent_expense_repository = RecurrentExpensesRepository(session)
         self.expense_repository = ExpensesRepository(session)
+        self.saves_repository = SavesRepository(session)
 
 # Users
     def create_user(self, user: User):
@@ -204,6 +209,17 @@ class Persistence(PersistenceGateway):
             logger.error(f"Error getting budget by category: {e}")
             self.session.rollback()
             raise CustomException(ResponseCodeEnum.KOG02)
+        
+    def get_budgets_by_user_id(self, user_id: int) -> List[Budget]:
+        try:
+            budget_entities = self.budget_repository.get_budgets_by_user_id(user_id)
+            return [BudgetsMapper.map_budget_entity_to_budget(budget) for budget in budget_entities]
+        except CustomException as e:
+            raise e
+        except SQLAlchemyError as e:
+            logger.error(f"Error getting budgets: {e}")
+            self.session.rollback()
+            raise CustomException(ResponseCodeEnum.KOG02)
 
 # Priorities
 
@@ -332,5 +348,19 @@ class Persistence(PersistenceGateway):
             raise e
         except SQLAlchemyError as e:
             logger.error(f"Error updating expense: {e}")
+            self.session.rollback()
+            raise CustomException(ResponseCodeEnum.KOG02)
+        
+    # Saves
+    def insert_new_save(self, saves: Saves):
+        try:
+            saves_entity = SavesMapper.map_saves_to_saves_entity(saves)
+            created_saves_entity = self.saves_repository.create_save(saves_entity)
+            return SavesMapper.map_saves_entity_to_saves(created_saves_entity)
+        except CustomException as e:
+            self.session.rollback()
+            raise e
+        except SQLAlchemyError as e:
+            logger.error(f"Error creating save: {e}")
             self.session.rollback()
             raise CustomException(ResponseCodeEnum.KOG02)

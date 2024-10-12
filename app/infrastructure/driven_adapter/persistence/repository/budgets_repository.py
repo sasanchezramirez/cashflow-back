@@ -30,3 +30,9 @@ class BudgetsRepository:
         budget_entity = self.session.query(BudgetsEntity).filter_by(category_id=category_id).first()
         self.session.refresh(budget_entity)
         return budget_entity
+    
+    def get_budgets_by_user_id(self, user_id: int):
+        budget_entities = self.session.query(BudgetsEntity).filter_by(user_id=user_id).all()
+        for budget_entity in budget_entities:
+            self.session.refresh(budget_entity)
+        return budget_entities
