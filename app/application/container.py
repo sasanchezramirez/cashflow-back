@@ -29,4 +29,4 @@ class Container(containers.DeclarativeContainer):
     recurrent_expense_usecase = providers.Factory(RecurrentExpensesUseCase, persistence_gateway=persistence_gateway)
     expense_usecase = providers.Factory(ExpensesUseCase, persistence_gateway=persistence_gateway, budget_usecase=budget_usecase)
     budget_balance_usecase = providers.Factory(BudgetBalanceUseCase, persistence_gateway=persistence_gateway)
-    scheduler_service = providers.Factory(SchedulerService)
+    scheduler_service = providers.Factory(SchedulerService, budgetBalanceUseCase=budget_balance_usecase)

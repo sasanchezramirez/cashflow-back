@@ -95,6 +95,17 @@ class Persistence(PersistenceGateway):
             logger.error(f"Error updating user: {e}")
             self.session.rollback()
             raise CustomException(ResponseCodeEnum.KOG02)
+        
+    def get_users_id(self) -> List[int]:
+        try:
+            user_entities = self.user_repository.get_users_id()
+            return [user.id for user in user_entities]
+        except CustomException as e:
+            raise e
+        except SQLAlchemyError as e:
+            logger.error(f"Error getting users id: {e}")
+            self.session.rollback()
+            raise CustomException(ResponseCodeEnum.KOG02)
 
 # Categories
 

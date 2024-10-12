@@ -28,6 +28,10 @@ class PersistenceGateway(ABC):
     def update_user(self, user: User):
         pass
 
+    @abstractmethod
+    def get_users_id(self) -> List[int]:
+        pass
+
     #Categories
 
     @abstractmethod

@@ -1,10 +1,12 @@
 import logging
+from typing import List
 import app.infrastructure.driven_adapter.persistence.mapper.user_mapper as mapper
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 from app.infrastructure.driven_adapter.persistence.entity.user_entity import User_entity
 from app.domain.model.util.response_codes import ResponseCodeEnum
 from app.domain.model.util.custom_exceptions import CustomException
+
 
 logger = logging.getLogger("User Repository")
 
@@ -103,3 +105,8 @@ class UserRepository:
             except Exception as e:
                 logger.error(f"Operation failed: {e}")
                 raise CustomException(ResponseCodeEnum.KOG01)
+        
+    def get_users_id(self) -> List[int]:    
+        user_entities = self.session.query(User_entity).all()
+        return [user.id for user in user_entities]
+
