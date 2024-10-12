@@ -10,6 +10,8 @@ async def lifespan(app):
     app.container = container
     scheduler_service = container.scheduler_service()
     scheduler_service.schedule_monthly_task(func=BudgetBalanceUseCase.monthly_task)
+    scheduler_service.schedule_weekly_task(func=BudgetBalanceUseCase.weekly_task)
+
     try:
         yield
     finally:

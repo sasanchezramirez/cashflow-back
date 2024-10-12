@@ -30,3 +30,14 @@ class BudgetBalanceUseCase:
             saves=saves, 
             user_id=user_id)
         return save
+    
+    def weekly_task(self, user_id: int):
+        budgets = self.persistence_gateway.get_budgets_by_user_id(user_id)
+        for budget in budgets:
+            try:
+                budget.weekly_balance = budget.weekly_budget
+                self.persistence_gateway.update_budget(budget)
+            except Exception as e:
+                logger.error(f"Error creating save: {e}")
+                raise e
+            logger.info(f"Budget updated: {budget}")
