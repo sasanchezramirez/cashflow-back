@@ -52,3 +52,10 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 ---
 
 This archetype aims to streamline the development process by providing a well-structured foundation based on Hexagonal Architecture principles. It is designed to be adaptable to various types of projects and requirements, ensuring a clean separation of concerns and ease of maintenance.
+
+
+## Database
+
+```bash
+psql -U cashflow-db -d cashflow-db
+```
