@@ -19,7 +19,7 @@ class SchedulerService:
         logger.info("Monthly task scheduled.")
 
     def schedule_weekly_task(self, func):
-        trigger = CronTrigger(day_of_week='sat', hour=15, minute=15)
+        trigger = CronTrigger(day_of_week='sat', hour=15, minute=30)
         self.scheduler.add_job(func, trigger)
         logger.info("Weekly task scheduled for every Monday.")
 
